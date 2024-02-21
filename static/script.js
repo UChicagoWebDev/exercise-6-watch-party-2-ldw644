@@ -64,7 +64,6 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 function messagePolling(clear = false) {
-  console.log(1);
   let element = document.getElementsByClassName("messages")[0];
   if(clear) {
     element.innerHTML = "";
@@ -83,7 +82,10 @@ function messagePolling(clear = false) {
     }})
     .then(response => response.json())
     .then(messages => {
-      if (messages == null) return;
+      if (messages == null) {
+        return;
+      }
+
       messages.forEach( m => {
         let author = document.createElement("author");
         author.textContent = m.author;
@@ -115,6 +117,10 @@ function updateUI(page) {
       }})
       .then(response => response.json())
       .then(messages => {
+        if (messages == null) {
+          document.querySelector(".chat").remove();
+          return
+        }
         room_name = messages.room_name;
         document.getElementById("curRoomName").innerText = room_name;
       })
@@ -331,7 +337,7 @@ function getRooms() {
   .then(messages => {
     roomList = document.querySelector(".roomList");
     roomList.innerHTML = "";
-    if (messages ==null) {
+    if (messages == null) {
       document.querySelector(".noRooms").classList.remove("hide");
     } else {
       messages.forEach(m => {

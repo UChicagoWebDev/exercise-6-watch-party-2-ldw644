@@ -183,7 +183,8 @@ def get_room_info(room_id):
     room_name = query_db("""
                  SELECT name FROM rooms where id = ?
                  """, [room_id], one=True)
-
+    if room_name == None:
+        return jsonify(None)
     return jsonify({"room_name": room_name["name"]})
 
 @app.route('/api/user/info')
@@ -200,6 +201,8 @@ def get_rooms():
     rows = query_db("""
                     SELECT * FROM ROOMS;
                     """)
+    if rows == None:
+        return jsonify(None)
     return jsonify([{"id": row["id"], "name": row["name"]} for row in rows])
 
 
