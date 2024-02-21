@@ -11,13 +11,13 @@
 <div class="splash container"> <!-- TODO: Show me only on "/" -->
   <div class="splashHeader">
     <div class="loginHeader">
-      <div class="loggedOut"> <!-- TODO: Show me only to logged-out users -->
+      <div class="loggedOut" onclick="gologin()"> <!-- TODO: Show me only to logged-out users -->
         <a>Login</a>
       </div>
       <div class="loggedIn"> <!-- TODO: Show me only to logged-in users -->
         <a class="welcomeBack">
-          <span class="username">Welcome back, {{ Username }}!</span>
-          <span class="material-symbols-outlined md-18">person</span></a>
+          <span class="username" id="splashusername">Welcome back, {{ Username }}!</span>
+          <span class="material-symbols-outlined md-18" onclick="goprofile()">person</span></a>
         </a>
       </div>
     </div>
@@ -30,16 +30,16 @@
     </div>
     <h1>Watch Party</h1>
     <h2>2</h2>
-    <button class="create">Create a Room</button> <!-- TODO: Show me only to logged-in users -->
-    <button class="signup">Signup</button> <!-- TODO: Show me only to logged-out users -->
+    <button class="create" onclick="createRoom()">Create a Room</button> <!-- TODO: Show me only to logged-in users -->
+    <button class="signup" onclick="signup()">Signup</button> <!-- TODO: Show me only to logged-out users -->
   </div>
 
   <h2>Rooms</h2>
   <div class="rooms">
     <div class="roomList">
-      <a>{{room.id}}: <strong>{{room.name}}</strong></a>
+      <!-- <a>{{room.id}}: <strong>{{room.name}}</strong></a> -->
     </div>
-    <div class="noRooms">No rooms yet! You get to be first!</div> <!-- TODO: Show me only if roomList is empty -->
+    <div class="noRooms hide">No rooms yet! You get to be first!</div> <!-- TODO: Show me only if roomList is empty -->
   </div>
 </div> <!-- end .splash -->
 
@@ -50,8 +50,8 @@
     <div class="loginHeader">
       <div class="loggedIn">
         <a class="welcomeBack">
-          <span class="username">{{ Username }}</span>
-          <span class="material-symbols-outlined md-18">person</span></a>
+          <span class="username" id="profileusernameright">{{ Username }}</span>
+          <span class="material-symbols-outlined md-18" onclick="goprofile()">person</span></a>
         </a>
       </div>
     </div>
@@ -61,16 +61,16 @@
       <h2>Welcome to Watch Party!</h2>
       <div class="alignedForm">
         <label for="username">Username: </label>
-        <input name="username" value="{{ username }}">
-        <button>update</button>
+        <input name="username" id="profileusername" value="">
+        <button onclick="changeUsername()">update</button>
         <label for="password">Password: </label>
-        <input type="password" name="password" value="{{ password }}">
-        <button>update</button>
+        <input type="password" id="password" name="password" value="">
+        <button onclick="changePassword()">update</button>
         <label for="repeatPassword">Repeat: </label>
-        <input type="password" name="repeatPassword" value="{{ password }}">
+        <input type="password" id="repeatPassword" name="repeatPassword" value="">
         <error>Passwords don't match</error>
-        <button class="exit goToSplash">Cool, let's go!</button>
-        <button class="exit logout">Log out</button>
+        <button class="exit goToSplash" onclick="gosplash()">Cool, let's go!</button>
+        <button class="exit logout" onclick="logout()">Log out</button>
       </div>
     </div>
   </div> 
@@ -86,16 +86,16 @@
       <h3>Enter your username and password to log in:</h3>
       <div class="alignedForm login">
         <label for="username">Username</label>
-        <input name="username"></input>
-        <button>Login</button>
+        <input id="loginusername" name="username"></input>
+        <button onclick="login()">Login</button>
         <label for="password">Password</label>
-        <input type="password" name="password">
+        <input type="password" id="loginpassword" name="password">
       </div>
       <div class="failed"> <!-- TODO: Hide me by default. Show only on failed login attempts -->
         <div class="message">
           Oops, that username and password don't match any of our users!
         </div>
-        <button>Create a new Account</button>
+        <button onclick="signup()">Create a new Account</button>
       </div>
     </div>
   </div>
@@ -108,24 +108,24 @@
     <div class="roomDetail">
       <div class="displayRoomName"> <!-- TODO: Show me by default. Hide when user clicks the edit icon below -->
         <h3>
-          Chatting in <strong>{{ room.name }}</strong>
-          <a><span class="material-symbols-outlined md-18">edit</span></a>
+          Chatting in <strong id="curRoomName">{{ room.name }}</strong>
+          <a onclick="showUpdateRoomNameInput()"><span class="material-symbols-outlined md-18">edit</span></a>
         </h3>
       </div>
       <div class="editRoomName"> <!-- TODO: Hide me by default. Show when user clicks the edit icon above -->
         <h3>
-          Chatting in <input>
-          <button>Update</button>
+          Chatting in <input id="roomName">
+          <button onclick="updateRoomName()">Update</button>
         </h3>
       </div>
       Invite users to this chat at:
-      <a>/rooms/{{ room_id }}</a>
+      <a id = "inviteLink">/rooms/{{ room_id }}</a>
     </div>
     <div class="loginHeader">
       <div class="loggedIn">
         <a class="welcomeBack">
-          <span class="username">{{ Username }}</span>
-          <span class="material-symbols-outlined md-18">person</span></a>
+          <span class="username" id="roomUsername">{{ Username }}</span>
+          <span class="material-symbols-outlined md-18" onclick="goprofile()">person</span></a>
         </a>
       </div>
     </div>
@@ -136,11 +136,11 @@
       <div class="chat">
         <div class="comment_box">
           <label for="comment">What do you have to say?</label>
-          <textarea name="comment"></textarea>
-          <button type="submit" value="Post">Post</button>
+          <textarea name="comment" id="commentContent"></textarea>
+          <button type="button" onclick="postMessage()">Post</button>
         </div>
         <div class="messages"> <!-- TODO: Replace with the content returned by the API -->
-          <message>
+          <!-- <message>
             <author>Mr Chatterworth</author>
             <content>Good evening! And how is everyone feeling?</content>
           </message>
@@ -163,7 +163,7 @@
           <message>
             <author>Mr Chatterworth</author>
             <content>Indeed, M. Cat. Indeed. 🧐</content>
-          </message>
+          </message> -->
         </div>
       </div>
       <div class="noMessages">
